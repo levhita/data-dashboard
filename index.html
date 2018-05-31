@@ -5,9 +5,60 @@
     <title>Data Dashboard</title>
   </head>
   <body>
+    <header>
+      <form id="office form">
+        <label for="offices-select">Sede:</label>
+        <select id="offices-select"></select>
+        <label for="cohorts-select">Generación:</label>
+        <select id="cohorts-select"></select>
+      </form>
+    </header>
+    
+    <main>
+      <section id="office">
+        <h1 id="office-title"></h1>
+        <dl>
+          <dt>Estudiantes Activas:</dt>
+          <dl id="office-active-students"></dl>
+          <dt>Estudiantes Inactivas:</dt>
+          <dl id="office-inactive-students"></dl>
+          <dt>Estudiantes Satifechas:</dt>
+          <dl id="office-satisfied-students"></dl>
+          <dt>Puntuación Coaches:</dt>
+          <dl id="office-coach-rating"></dl>
+          <dt>Puntuación Jedis:</dt>
+          <dl id="office-jedi-rating"></dl>
+        </dl>
+      </section>
+      
+      <section id="cohort">
+      <h2 id="cohort-title"></h2>
+        <dl>
+          <dt>Estudiantes Activas:</dt>
+          <dl id="cohort-active-students-number"></dl>
+          <dt>Estudiantes Inactivas: <a href="#">Details...</a></dt>
+          <dl id="cohort-inactive-students-number"></dl>
+          <dt>Estudiantes Exitosas:</dt>
+          <dl id="cohort-successful-students"></dl>
+          <dt>Estudiantes Exitosas(técnica):</dt>
+          <dl id="cohort-successful-tech-students"></dl>
+          <dt>Estudiantes Exitosas(HSE):</dt>
+          <dl id="cohort-successful-hse-students"></dl>
+          <dt>Estudiantes Satifechas:</dt>
+          <dl id="cohort-satisfied-students"></dl>
+          <dt>Puntuación Coaches:</dt>
+          <dl id="cohort-coach-rating"></dl>
+          <dt>Puntuación Jedis:</dt>
+          <dl id="cohort-jedi-rating"></dl>
+        </dl>
+      </section>
+      
+    </main>
 
 		<!-- Base de datos -->
-		<script src="./js/data.js"></script>
+    <script src="./js/data.js"></script>
+    <!-- Objeto para acceder y hacer calculos con la data-->
+		<script src="./js/laboratoria.js"></script>
 		<!-- Aquí va tus archivos JS -->
     <script src="./js/app.js"></script>
   </body>
