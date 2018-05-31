@@ -55,6 +55,13 @@ var Laboratoria = {
             if (extendedStudent.successfulHSE)  summary.successfulStudentsHSE++;
         });
 
+        summary.satisfied = 0;
+        var total_satisfied = 0
+        cohortData.ratings.map( (rating) => {
+            total_satisfied += rating.student.cumple + rating.student.supera;
+        });
+        
+
         cohortData.summary = summary;
         return cohortData;
     },

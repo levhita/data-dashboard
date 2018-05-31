@@ -46,11 +46,21 @@ function fillCohortData(cohortData) {
     document.getElementById('cohort-active-students-number').textContent   =  cohortData.summary.activeStudentsNumber;
     document.getElementById('cohort-inactive-students-number').textContent = cohortData.summary.inactiveStudentsNumber;
     
-    sucessfullStudents = cohortData.summary.successfulStudents + " ("+ Math.floor(cohortData.summary.successfulStudents/active*100) +"%)";
+    sucessfullStudents = cohortData.summary.successfulStudents
+                       + " ("+ Math.floor(cohortData.summary.successfulStudents/active*100)
+                       + "%)" ;
     document.getElementById('cohort-successful-students').textContent = sucessfullStudents;
+    
+    sucessfullStudentsTech = cohortData.summary.successfulStudentsTech
+                       + " ("+ Math.floor(cohortData.summary.successfulStudentsTech/active*100)
+                       + "%)" ;
+    document.getElementById('cohort-successful-tech-students').textContent = sucessfullStudentsTech;
 
-    document.getElementById('cohort-successful-tech-students').textContent = cohortData.summary.successfulStudentsTech;
-    document.getElementById('cohort-successful-hse-students').textContent =  cohortData.summary.successfulStudentsHSE;
+    sucessfullStudentsHSE = cohortData.summary.successfulStudentsHSE
+                       + " ("+ Math.floor(cohortData.summary.successfulStudentsTech/active*100)
+                       + "%)" ;
+    document.getElementById('cohort-successful-hse-students').textContent = sucessfullStudentsTech;
+
 }
 
 console.log(data);
