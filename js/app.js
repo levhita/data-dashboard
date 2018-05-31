@@ -29,17 +29,28 @@ function fillOptions(options, element){
     
     /** New options means a mandatory change trigger **/
     element.dispatchEvent(new Event('change'));
-};
+}
 
 function fillOfficeData(officeData) {
-    var officeTitle = document.getElementById('office-title');
-    officeTitle.textContent = officeData.name;
-};
+    document.getElementById('office-title').textContent = officeData.name;
+    document.getElementById('office-active-students').textContent   = officeData.summary.activeStudentsNumber;
+    document.getElementById('office-inactive-students').textContent = officeData.summary.inactiveStudentsNumber;
+}
 
 function fillCohortData(cohortData) {
+    console.log(cohortData);
+    
+    var total_students = cohortData.students.length;
+    var active= cohortData.summary.activeStudentsNumber;
     document.getElementById('cohort-title').textContent = cohortData.name;
-    document.getElementById('cohort-active-students-number').textContent = cohortData.summary.activeStudentsNumber;
+    document.getElementById('cohort-active-students-number').textContent   =  cohortData.summary.activeStudentsNumber;
     document.getElementById('cohort-inactive-students-number').textContent = cohortData.summary.inactiveStudentsNumber;
+    
+    sucessfullStudents = cohortData.summary.successfulStudents + " ("+ Math.floor(cohortData.summary.successfulStudents/active*100) +"%)";
+    document.getElementById('cohort-successful-students').textContent = sucessfullStudents;
+
+    document.getElementById('cohort-successful-tech-students').textContent = cohortData.summary.successfulStudentsTech;
+    document.getElementById('cohort-successful-hse-students').textContent =  cohortData.summary.successfulStudentsHSE;
 }
 
 console.log(data);
