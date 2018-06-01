@@ -40,13 +40,9 @@ function fillOfficeSummary(office) {
 }
 
 function fillCohortSummary(cohort) {
-    console.log(cohort);
-
     id('cohort-title').textContent = cohort.name;
     createBarGraph(id('cohort-activity'), cohort.activity);
     createBarGraph(id('cohort-satisfaction'), cohort.satisfaction);
-    /*createBarGraph(id('cohort-success'), cohort.success);*/
+    createBarGraph(id('cohort-success'), cohort.success);
     createBarGraph(id('cohort-score'), cohort.score);
 }
-
-console.log(data);

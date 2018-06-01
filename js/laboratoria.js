@@ -24,8 +24,6 @@ var Laboratoria = {
         Object.keys(office).map( function(cohortName) {
             var cohort = office[cohortName];
 
-            var cohortSummary = Laboratoria.getCohortSummary(officeName,cohortName);
-            
             var active = cohort.students.filter( student => student.active).length;
             var inactive = cohort.students.filter( student => !student.active).length;
             summary.activity.push([cohortName, active, inactive]);
@@ -37,13 +35,10 @@ var Laboratoria = {
             var jedis = 0;
             
             cohort.ratings.map( (rating) => {
-                
                 satisfied += rating.student.cumple + rating.student.supera;
                 unsatisfied += rating.student['no-cumple'];
-                
                 coaches += rating.teacher;
                 jedis += rating.jedi;
-                
                 sprints++;
             });
             
@@ -64,9 +59,21 @@ var Laboratoria = {
             activity: [['Sprint','Activas', 'Inactivas']],
             satisfaction:[['Sprint', 'Satisfechas', 'Insatisfechas']],
             score:[['Sprint', 'Coaches', 'Jedis']],
-            success:[['Sprint', 'Exitosas', 'Baja']],
+            success:[['Sprint', 'Total', 'Tech', 'HSE']],
         };
         
+        for (var i=1;i<=4;i++) {
+            summary.success.push(["Sprint "+i, 0, 0, 0]);   
+        }
+        cohort.students.map( (student) => {
+            var success = this.getSprintsSuccess(student);
+            for (var i=0; i<success.length;i++) {
+                if(success[i].total){summary.success[i+1][1]++};
+                if(success[i].tech) {summary.success[i+1][2]++};
+                if(success[i].hse)  {summary.success[i+1][3]++};
+            }
+        });
+
         cohort.ratings.map( (rating) => {
             var sprintName = "Sprint " + rating.sprint;
             summary.activity.push([
@@ -80,16 +87,23 @@ var Laboratoria = {
                 rating.student['no-cumple']
             ]);
             summary.score.push([sprintName, rating.teacher, rating.jedi]);
-        });
-        /*cohort.ratings.map( (rating) => {
-            var sprint = "Sprint "+ rating.sprint;
-            var satisfied = rating.student.cumple + rating.student.supera;
-            var unsatisfied = rating['no-cumple'];
-            summary.satisfaction.push([sprint, satisfied, unsatisfied]);
-        });*/
-        
-        //cohort
-        
+        });        
         return summary;
-    }
+    },
+    getSprintsSuccess: function(student) {
+        var sprints = [];
+        student.sprints.map(function(sprint) {
+            var success = {
+                total: false,
+                tech: false,
+                hse: false,
+            }
+            success.total = ((sprint.score.tech + sprint.score.hse) > (3000*0.7)) && student.active;
+            success.tech  = (sprint.score.tech > (1800*0.7)) && student.active;
+            success.hse   = (sprint.score.tech > (1200*0.7)) && student.active;
+            
+            sprints.push(success);
+        });
+        return sprints;
+    },
 }
