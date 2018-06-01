@@ -12,8 +12,7 @@ window.onload = function(){
         fillCohortSummary( Laboratoria.getCohortSummary(officesSelect.value, this.value) );
     });
     
-    fillOptions(Laboratoria.getOfficeNames(), officesSelect);
-    
+    fillOptions(Laboratoria.getOfficeNames(), officesSelect);  
 }
 
 function fillOptions(options, element){

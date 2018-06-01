@@ -17,8 +17,8 @@ var Laboratoria = {
         var summary = {
             name: officeName,
             activity: [['Generación','Activas', 'Inactivas']],
-            satisfaction:[['Generación', 'Satisfechas', 'Insatisfechas']],
-            score:[['Generación', 'Coaches', 'Jedis']],
+            satisfaction: [['Generación', 'Satisfechas', 'Insatisfechas']],
+            score: [['Generación', 'Coaches', 'Jedis']],
         }
         
         Object.keys(office).map( function(cohortName) {
@@ -56,18 +56,19 @@ var Laboratoria = {
 
         var summary = {
             name: cohortName,
-            activity: [['Sprint','Activas', 'Inactivas']],
-            satisfaction:[['Sprint', 'Satisfechas', 'Insatisfechas']],
-            score:[['Sprint', 'Coaches', 'Jedis']],
-            success:[['Sprint', 'Total', 'Tech', 'HSE']],
+            activity: [['Sprints','Activas', 'Inactivas']],
+            satisfaction:[['Sprints', 'Sí', 'No']],
+            score:[['Sprints', 'Coaches', 'Jedis']],
+            success:[['Sprints', 'Total', 'Tech', 'HSE']],
         };
         
         for (var i=1;i<=4;i++) {
             summary.success.push(["Sprint "+i, 0, 0, 0]);   
         }
         cohort.students.map( (student) => {
+            if(Object.keys(student).length<=0) return;
             var success = this.getSprintsSuccess(student);
-            for (var i=0; i<success.length;i++) {
+            for (var i=0;i<success.length;i++) {
                 if(success[i].total){summary.success[i+1][1]++};
                 if(success[i].tech) {summary.success[i+1][2]++};
                 if(success[i].hse)  {summary.success[i+1][3]++};

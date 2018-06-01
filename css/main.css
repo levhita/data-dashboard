@@ -1,30 +1,103 @@
-body {
+ body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    margin-top: 3em;
+    margin-top: 4em;
 }
-.cards {
-    box-sizing: border-box;
-    padding: 1em;
-}
-.card {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 1em;
-    border:1px solid grey;
-    float: left;
-    margin-top: 1em;
-    border-radius: 0.3em;
+#office-form {
+    float:right;
 }
 h2 {
-    margin-top:0em;
+    color:white;
 }
+h3 {
+    margin-top:0.5em;
+}
+
 header {
-    background-color: yellow;
+    box-sizing: border-box;
+    background-color: white;
     padding:1em;
     height:4em;
     position:fixed;
     top:0;
     width:100%;
     z-index: 10;
+}
+header img {
+    height:2em;
+}
+header select {
+    border:1px solid white;
+    padding:0.2em;
+    border-radius: 0.5em;
+    background-color: white;
+    font-weight: bolder;
+}
+section {
+    padding:1em;
+}
+
+section#office {
+   background-color:#335;  
+}
+section#cohort {
+    margin:0;
+    background-color:#355;
+}
+.cards::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+.card {
+    box-sizing: border-box;
+    padding: 0.5em;
+    width:100%;
+    float: left;
+    
+}
+.content {
+    box-sizing: border-box;
+    padding: 0.5em;
+    background-color: white;
+    border-radius: 0.5em;
+}
+
+
+
+
+/*@media (min-width: 576px) {
+    #office .card {
+        width: 100%;
+    }
+    #cohort .card {
+        width: 100%;
+    }
+}*/
+
+@media (min-width: 960px) {
+    #office .card {
+        width: 50%;
+    }
+    #cohort .card {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1100px) {
+    #office .card {
+        width: 33%;
+    }
+    #cohort .card {
+        width: 33%;
+    }
+}
+@media (min-width: 1350px) {
+    #office .card {
+        width: 33%;
+    }
+    #cohort .card {
+        width: 25%;
+    }
 }

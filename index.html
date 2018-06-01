@@ -8,58 +8,72 @@
 </head>
 <body>
   <header>
-    <form id="office form">
-      &lt;L&gt;
+    <img src="assets/images/laboratoria_logo.png">
+    
+    <form id="office-form">
       <label for="offices-select">Sede:</label>
       <select id="offices-select"></select>
       <label for="cohorts-select">Generación:</label>
       <select id="cohorts-select"></select>
     </form>
+    
   </header>
-  
-  <main>
-    
-    <section id="office-dasboard">
-      <h1 id="office-title"></h1>
-      <div class="cards">     
-        <div class="card">
-          <h2>Estudiantes</h2>
+ 
+  <section id="office">
+    <h2>Estádisticas Sede: <span id="office-title"></span></h2>
+    <div class="cards">   
+      <div class="card">
+        <div class="content">
+          <h3>Estudiantes</h3>
           <div id="office-activity"></div>  
-        </div>      
-        <div class="card">
-          <h2>Satisfación</h2>
+        </div>
+      </div>      
+      <div class="card">
+        <div class="content">
+          <h3>Satisfación</h3>
           <div id="office-satisfaction"></div> 
-        </div>      
-        <div class="card">
-          <h2>Puntuación</h2>
+        </div>
+      </div>      
+      <div class="card">
+        <div class="content">
+          <h3>Puntuación</h3>
           <div id="office-score"></div>
-        </div>     
-      </div>    
-    </section>
-    
-    <section id="cohort-dasboard">
-      <h1 id="cohort-title"></h1>
-      <div class="cards">
-        <div class="card">
-          <h2>Estudiantes</h2>
+        </div>
+      </div>     
+    </div>    
+  </section>
+  
+  <section id="cohort">
+    <h2>Estádisticas Generación: <span id="cohort-title"></span></h2>
+    <div class="cards">
+      <div class="card">
+        <div class="content">
+          <h3>Estudiantes</h3>
           <div id="cohort-activity"></div>  
         </div>
-        <div class="card">
-          <h2>Éxito</h2>
-          <div id="cohort-success"></div>  
-        </div>
-        <div class="card">
-          <h2>Satisfación</h2>
+      </div>
+      <div class="card">
+        <div class="content">
+          <h3>Éxito</h3>
+          <div id="cohort-success"></div> 
+        </div> 
+      </div>
+      <div class="card">
+        <div class="content">
+          <h3>Satisfación</h3>
           <div id="cohort-satisfaction"></div> 
         </div>
-        <div class="card">
-          <h2>Puntuación</h2>
+      </div>
+      <div class="card">
+        <div class="content">
+          <h3>Puntuación</h3>
           <div id="cohort-score"></div>
         </div>
       </div>
-    </section>
-    
-  </main>
+    </div>
+  </section>
+  
+  
   
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- graphs -->
