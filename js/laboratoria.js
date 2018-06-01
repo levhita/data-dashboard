@@ -1,5 +1,5 @@
 var Laboratoria = {
-    data: data,
+    sourceData: data,
     
     /** Gets a simple array with the office names */
     getOfficeNames: function() {
@@ -10,84 +10,86 @@ var Laboratoria = {
     getCohortNames: function(office) {
         return Object.keys( data[office] );
     },
-    
-    /** Gets and extends office data **/
-    getOfficeData: function(office) {
-        var officeData = {
-            cohorts: data[office],
-            name: office,
-        }
+    /** Gets the special summarized data needed for the ui */
+    getOfficeSummary: function(officeName) {
+        var office = this.sourceData[officeName];
+        
         var summary = {
-            activeStudentsNumber: 0,
-            inactiveStudentsNumber: 0
+            name: officeName,
+            activity: [['Generación','Activas', 'Inactivas']],
+            satisfaction:[['Generación', 'Satisfechas', 'Insatisfechas']],
+            score:[['Generación', 'Coaches', 'Jedis']],
         }
-
-        Object.keys(officeData.cohorts).map(function(cohort){
-            var cohortData = Laboratoria.getCohortData(office, cohort);
-            summary.activeStudentsNumber += cohortData.summary.activeStudentsNumber;
-            summary.inactiveStudentsNumber += cohortData.summary.inactiveStudentsNumber;
-        });
-
-        officeData.summary = summary;
-        return officeData;
-    },
-    
-    /** Gets and extends cohort data **/
-    getCohortData: function(office, cohort) {
-        var cohortData = data[office][cohort];
-        cohortData.name = cohort;
         
-        var summary = {};
-        summary.activeStudentsNumber   = cohortData.students.filter( (student) => student.active).length;
-        summary.inactiveStudents       = cohortData.students.filter( (student) => !student.active);
-        summary.inactiveStudentsNumber = summary.inactiveStudents.length;
-        
-        summary.successfulStudents     =  0;
-        summary.successfulStudentsHSE  =  0;
-        summary.successfulStudentsTech =  0;
+        Object.keys(office).map( function(cohortName) {
+            var cohort = office[cohortName];
 
-        cohortData.students.map( (student) => {
-            if (Object.keys(student).length<=0) return;
+            var cohortSummary = Laboratoria.getCohortSummary(officeName,cohortName);
             
-            var extendedStudent = Laboratoria.extendStudentData(student);
-            if (extendedStudent.successful)     summary.successfulStudents++;
-            if (extendedStudent.successfulTech) summary.successfulStudentsTech++;
-            if (extendedStudent.successfulHSE)  summary.successfulStudentsHSE++;
+            var active = cohort.students.filter( student => student.active).length;
+            var inactive = cohort.students.filter( student => !student.active).length;
+            summary.activity.push([cohortName, active, inactive]);
+            
+            var satisfied = 0;
+            var unsatisfied = 0;
+            var sprints = 0;
+            var coaches = 0;
+            var jedis = 0;
+            
+            cohort.ratings.map( (rating) => {
+                
+                satisfied += rating.student.cumple + rating.student.supera;
+                unsatisfied += rating.student['no-cumple'];
+                
+                coaches += rating.teacher;
+                jedis += rating.jedi;
+                
+                sprints++;
+            });
+            
+            summary.satisfaction.push([cohortName, satisfied/sprints, unsatisfied/sprints]);
+            summary.score.push([cohortName, coaches/sprints, jedis/sprints]);
         });
 
-        summary.satisfied = 0;
-        var total_satisfied = 0
-        cohortData.ratings.map( (rating) => {
-            total_satisfied += rating.student.cumple + rating.student.supera;
-        });
-        
-
-        cohortData.summary = summary;
-        return cohortData;
+        return summary;
     },
     
+    /** Gets the special summarized data needed for the ui */
+    getCohortSummary: function(officeName, cohortName) {
+        var office = this.sourceData[officeName];
+        var cohort = office[cohortName];
 
-    extendStudentData: function(student) {
-        student.points  = 0;
-        student.tech    = 0;
-        student.hse     = 0;
+        var summary = {
+            name: cohortName,
+            activity: [['Sprint','Activas', 'Inactivas']],
+            satisfaction:[['Sprint', 'Satisfechas', 'Insatisfechas']],
+            score:[['Sprint', 'Coaches', 'Jedis']],
+            success:[['Sprint', 'Exitosas', 'Baja']],
+        };
         
-        student.sprints.map( function(sprint) {
-           student.points += sprint.score.tech + sprint.score.hse;
-           student.tech += sprint.score.tech;
-           student.hse += sprint.score.hse;
+        cohort.ratings.map( (rating) => {
+            var sprintName = "Sprint " + rating.sprint;
+            summary.activity.push([
+                sprintName,
+                cohort.students.filter( student => student.active).length,
+                cohort.students.filter( student => !student.active).length
+            ]);
+            summary.satisfaction.push([
+                sprintName,
+                rating.student.cumple + rating.student.supera,
+                rating.student['no-cumple']
+            ]);
+            summary.score.push([sprintName, rating.teacher, rating.jedi]);
         });
-
-        student.successful     = (student.points > (student.sprints.length*3000*0.7)) && student.active;
-        student.successfulTech = (student.tech   > (student.sprints.length*1800*0.7)) && student.active;
-        student.successfulHSE  = (student.hse    > (student.sprints.length*1200*0.7)) && student.active;
-        return student;
-    },
-
-    /** Gets and extends student data **/
-    getStudentData: function(office, cohort, student) {
-        var studentData = data[office][cohort][student];
-        if (Object.keys(studentData).length<=0) return null;
-        return Laboratoria.extendStudentData(student);
-    },
+        /*cohort.ratings.map( (rating) => {
+            var sprint = "Sprint "+ rating.sprint;
+            var satisfied = rating.student.cumple + rating.student.supera;
+            var unsatisfied = rating['no-cumple'];
+            summary.satisfaction.push([sprint, satisfied, unsatisfied]);
+        });*/
+        
+        //cohort
+        
+        return summary;
+    }
 }

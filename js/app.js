@@ -1,14 +1,15 @@
 window.onload = function(){
-    var officesSelect = document.getElementById('offices-select');
-    var cohortsSelect = document.getElementById('cohorts-select');
+       
+    var officesSelect = id('offices-select');
+    var cohortsSelect = id('cohorts-select');
     
     officesSelect.addEventListener('change', function() {
         fillOptions( Laboratoria.getCohortNames(this.value), cohortsSelect );
-        fillOfficeData( Laboratoria.getOfficeData(this.value) );
+        fillOfficeSummary( Laboratoria.getOfficeSummary(this.value) );
     });
     
     cohortsSelect.addEventListener('change', function() {
-        fillCohortData( Laboratoria.getCohortData(officesSelect.value, this.value) );
+        fillCohortSummary( Laboratoria.getCohortSummary(officesSelect.value, this.value) );
     });
     
     fillOptions(Laboratoria.getOfficeNames(), officesSelect);
@@ -31,36 +32,21 @@ function fillOptions(options, element){
     element.dispatchEvent(new Event('change'));
 }
 
-function fillOfficeData(officeData) {
-    document.getElementById('office-title').textContent = officeData.name;
-    document.getElementById('office-active-students').textContent   = officeData.summary.activeStudentsNumber;
-    document.getElementById('office-inactive-students').textContent = officeData.summary.inactiveStudentsNumber;
+function fillOfficeSummary(office) {
+    id('office-title').textContent = office.name;
+    createBarGraph(id('office-activity'), office.activity);
+    createBarGraph(id('office-satisfaction'), office.satisfaction);
+    createBarGraph(id('office-score'), office.score);
 }
 
-function fillCohortData(cohortData) {
-    console.log(cohortData);
-    
-    var total_students = cohortData.students.length;
-    var active= cohortData.summary.activeStudentsNumber;
-    document.getElementById('cohort-title').textContent = cohortData.name;
-    document.getElementById('cohort-active-students-number').textContent   =  cohortData.summary.activeStudentsNumber;
-    document.getElementById('cohort-inactive-students-number').textContent = cohortData.summary.inactiveStudentsNumber;
-    
-    sucessfullStudents = cohortData.summary.successfulStudents
-                       + " ("+ Math.floor(cohortData.summary.successfulStudents/active*100)
-                       + "%)" ;
-    document.getElementById('cohort-successful-students').textContent = sucessfullStudents;
-    
-    sucessfullStudentsTech = cohortData.summary.successfulStudentsTech
-                       + " ("+ Math.floor(cohortData.summary.successfulStudentsTech/active*100)
-                       + "%)" ;
-    document.getElementById('cohort-successful-tech-students').textContent = sucessfullStudentsTech;
+function fillCohortSummary(cohort) {
+    console.log(cohort);
 
-    sucessfullStudentsHSE = cohortData.summary.successfulStudentsHSE
-                       + " ("+ Math.floor(cohortData.summary.successfulStudentsTech/active*100)
-                       + "%)" ;
-    document.getElementById('cohort-successful-hse-students').textContent = sucessfullStudentsTech;
-
+    id('cohort-title').textContent = cohort.name;
+    createBarGraph(id('cohort-activity'), cohort.activity);
+    createBarGraph(id('cohort-satisfaction'), cohort.satisfaction);
+    /*createBarGraph(id('cohort-success'), cohort.success);*/
+    createBarGraph(id('cohort-score'), cohort.score);
 }
 
 console.log(data);
