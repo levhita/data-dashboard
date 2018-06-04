@@ -10,10 +10,31 @@ window.onload = function(){
     
     cohortsSelect.addEventListener('change', function() {
         fillCohortSummary( Laboratoria.getCohortSummary(officesSelect.value, this.value) );
+        //fillStudents( Laboratoria.getStudents(id('offices-select').value, id('cohorts-select').value) );
     });
     
-    fillOptions(Laboratoria.getOfficeNames(), officesSelect);  
+    fillOptions(Laboratoria.getOfficeNames(), officesSelect); 
+    
+    id('students-button').addEventListener('click',function() {
+        id('stats').style="display:none";
+        id('students').style="display:block";
+        id('stats-button').classList.remove("active");
+        id('students-button').classList.add("active");
+        
+        fillStudents( Laboratoria.getStudents(id('offices-select').value, id('cohorts-select').value) );
+    });
+
+    id('stats-button').addEventListener('click',function() {
+        id('students').style="display:none";
+        id('stats').style="display:block";
+        id('stats-button').classList.add("active");
+        id('students-button').classList.remove("active");
+        
+        fillOfficeSummary( Laboratoria.getOfficeSummary(id('offices-select').value) );
+        fillCohortSummary( Laboratoria.getCohortSummary(id('offices-select').value, id('cohorts-select').value) );
+    });
 }
+
 
 function fillOptions(options, element){
     /** Empty the select before putting new elements **/
@@ -44,4 +65,17 @@ function fillCohortSummary(cohort) {
     createBarGraph(id('cohort-satisfaction'), cohort.satisfaction);
     createBarGraph(id('cohort-success'), cohort.success);
     createBarGraph(id('cohort-score'), cohort.score);
+}
+
+function fillStudents(students) {
+    id('students-title').textContent = students.title;
+    var container = id('students-container');
+    container.innerHTML='';
+    
+    var template = id('student-template').innerHTML;
+    students.students.map(function(student){
+        var newElement = fillTemplate(template, student.data, 'div', 'card')
+        container.appendChild(newElement);
+        createBarGraph(newElement.getElementsByClassName('sprints')[0], student.sprints);
+    });
 }

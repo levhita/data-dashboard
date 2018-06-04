@@ -1,13 +1,10 @@
  body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    margin-top: 4em;
+    margin-top: 96px;
 }
 #office-form {
     float:right;
-}
-h2 {
-    color:white;
 }
 h3 {
     margin-top:0.5em;
@@ -15,34 +12,67 @@ h3 {
 
 header {
     box-sizing: border-box;
-    background-color: white;
-    padding:1em;
-    height:4em;
     position:fixed;
     top:0;
     width:100%;
+    
+    padding:10px;
+    height:94px;
+    
+    background-color:#222;
+    color:white;
+    
+    font-size: 10px;
     z-index: 10;
 }
-header img {
-    height:2em;
-}
 header select {
-    border:1px solid white;
-    padding:0.2em;
-    border-radius: 0.5em;
-    background-color: white;
+    font-size: 10px;
+}
+header nav{
+    clear:both;
+    text-align: right;
+    margin-top:36px;
+}
+header nav a {
+    box-sizing: border-box;
+    display:inline-block;
+    height:32px;
+    padding:0.6em;
+    background-color:#ffec60;
+    color: rgb(65, 65, 65);
+    text-decoration:none;
     font-weight: bolder;
 }
-section {
+header nav a.active {
+    background-color: #ffe521;
+    color:black;
+}
+
+#logo {
+    float:left;
+    width: 26px;
+    height: 26px;
+    background-image: url('../assets/images/logo_resumido.png');
+    background-size: 100%;
+    text-indent: -5000px;
+    
+}
+
+section, main#students {
     padding:1em;
+    background-color:#F0F0F0;  
+    color:black;
 }
 
 section#office {
-   background-color:#335;  
+   background-color:#F0F0F0;  
+   color:black;
 }
+
 section#cohort {
     margin:0;
-    background-color:#355;
+    background-color:#222;
+    color:white;
 }
 .cards::after {
     display: block;
@@ -58,46 +88,97 @@ section#cohort {
     
 }
 .content {
+    position: relative;
     box-sizing: border-box;
-    padding: 0.5em;
+    padding: 0.5em 0.5em 3em 0.5em;
     background-color: white;
     border-radius: 0.5em;
 }
+#students  .content img {
+    float:left;
+    width: 5em;
+    height:5em;
+    border-radius: 2.5em;
+}
+#students  .content h3 {
+    float:left;
+    margin-top: 1.5em;
+    margin-left: 0.5em;
+}
+#students .content::after{
+    display: block;
+    content: "";
+    clear: both;
+}   
 
+#students .sprints {
+    clear:both;
+    margin-top:6em;
+}
 
+#students .statuses  {
+    position: absolute;
+    bottom:0.5em;
+    right:0.5em;
+    color:white;
+    font-size: 12px;
+}
+#students .statuses span {
+    display:inline-block;
+    border-radius: 0.5em;
+    padding:0.5em;
+}
 
-
-/*@media (min-width: 576px) {
-    #office .card {
-        width: 100%;
+#students .statuses span.fail {
+    background:#db4437;
+}
+#students .statuses span.success {
+    background:#4285f4;
+} 
+@media (min-width: 576px) {
+    body {
+        margin-top: 96px;
     }
-    #cohort .card {
-        width: 100%;
+    header {
+        box-sizing: border-box;
+        position:fixed;
+        top:0;
+        width:100%;
+        
+        padding:10px;
+        height:94px;
+        background-color:black;
+        color:white;
+        
+        font-size: 14px;
     }
-}*/
+    header select {
+        font-size: 14px;
+    }
+    
+    #logo {
+        width: 169px;
+        height: 29px;
+        background-image: url('../assets/images/laboratoria_logo.png');
+        background-size: 100%;
+        text-indent: -5000px;
+    }
+}
 
 @media (min-width: 960px) {
-    #office .card {
-        width: 50%;
-    }
-    #cohort .card {
+   .card {
         width: 50%;
     }
 }
 
 @media (min-width: 1100px) {
-    #office .card {
-        width: 33%;
-    }
-    #cohort .card {
+    .card {
         width: 33%;
     }
 }
 @media (min-width: 1350px) {
-    #office .card {
-        width: 33%;
-    }
-    #cohort .card {
+    
+    .card {
         width: 25%;
     }
 }

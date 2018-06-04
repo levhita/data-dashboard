@@ -10,6 +10,7 @@ var Laboratoria = {
     getCohortNames: function(office) {
         return Object.keys( data[office] );
     },
+    
     /** Gets the special summarized data needed for the ui */
     getOfficeSummary: function(officeName) {
         var office = this.sourceData[officeName];
@@ -17,7 +18,7 @@ var Laboratoria = {
         var summary = {
             name: officeName,
             activity: [['Generación','Activas', 'Inactivas']],
-            satisfaction: [['Generación', 'Satisfechas', 'Insatisfechas']],
+            satisfaction: [['Generación', 'Sí', 'No']],
             score: [['Generación', 'Coaches', 'Jedis']],
         }
         
@@ -49,6 +50,51 @@ var Laboratoria = {
         return summary;
     },
     
+    /** Students ready to be drawn in the ui */
+    getStudents: function(officeName, cohortName) {
+        var office = this.sourceData[officeName];
+        var cohort = office[cohortName];
+        students = [];
+        
+        
+        cohort.students.map((student) =>{
+            var sprintData = [['Sprints', 'Total', 'Tech', 'HSE']];
+            
+            var sprints = student.sprints.length;
+            var total = 0;
+            var tech  = 0
+            var hse   = 0;
+            
+            student.sprints.map(function(sprint){
+                sprintData.push([
+                    'Sprint '+ sprint.number,
+                    sprint.score.tech+sprint.score.hse,
+                    sprint.score.tech,
+                    sprint.score.hse,
+                ]);
+                total += sprint.score.tech+sprint.score.hse;
+                tech  += sprint.score.tech;
+                hse   += sprint.score.hse;
+            });
+
+
+            var newStudent = {
+                data: {
+                    name: student.name,
+                    photo: student.photo,
+                    active: student.active?'success':'fail',
+                    total: (total > (3000*sprints*0.7))?'success':'fail',
+                    tech: (tech > (1800*sprints*0.7))?'success':'fail',
+                    hse: (hse > (1200*sprints*0.7))?'success':'fail',
+                },
+                sprints: sprintData,
+                
+            }
+            students.push(newStudent);
+        });
+        return {title:officeName +" - "+cohortName, students:students};
+    },
+
     /** Gets the special summarized data needed for the ui */
     getCohortSummary: function(officeName, cohortName) {
         var office = this.sourceData[officeName];
@@ -91,6 +137,7 @@ var Laboratoria = {
         });        
         return summary;
     },
+    /** Get the sucess status for a student **/
     getSprintsSuccess: function(student) {
         var sprints = [];
         student.sprints.map(function(sprint) {
