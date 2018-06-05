@@ -27,13 +27,13 @@
       <div class="cards">   
         <div class="card">
           <div class="content">
-            <h3>Estudiantes</h3>
+            <h3>Estatus</h3>
             <div id="office-activity"></div>  
           </div>
         </div>      
         <div class="card">
           <div class="content">
-            <h3>Satisfación</h3>
+            <h3>Satisfacción</h3>
             <div id="office-satisfaction"></div> 
           </div>
         </div>      
@@ -51,7 +51,7 @@
       <div class="cards">
         <div class="card">
           <div class="content">
-            <h3>Estudiantes</h3>
+            <h3>Estatus</h3>
             <div id="cohort-activity"></div>  
           </div>
         </div>
@@ -63,7 +63,13 @@
         </div>
         <div class="card">
           <div class="content">
-            <h3>Satisfación</h3>
+            <h3>Éxito Total</h3>
+            <div id="cohort-success-total"></div> 
+          </div> 
+        </div>
+        <div class="card">
+          <div class="content">
+            <h3>Satisfacción</h3>
             <div id="cohort-satisfaction"></div> 
           </div>
         </div>
@@ -77,9 +83,9 @@
     </section>
   </main>
   
-  <main id="students">
+  <main id="students" style="display:none">
     
-    <h2>Estudiantes <span id="students-title"></span></h2>
+    <h2>Estudiantes: <span id="students-title"></span></h2>
     <div id="students-container" class="cards">
       
     </div>
@@ -94,7 +100,9 @@
         </div>
         <img src="{{photo}}"/>
         <h3>{{name}}</h3>
-        <div class="sprints"></div>
+        <div class="sprints">
+          <div class="dummy">Sin Sprints</div>
+        </div>
       </div>
     </div>
   </main>

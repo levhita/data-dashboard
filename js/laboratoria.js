@@ -24,7 +24,7 @@ var Laboratoria = {
         
         Object.keys(office).map( function(cohortName) {
             var cohort = office[cohortName];
-
+            
             var active = cohort.students.filter( student => student.active).length;
             var inactive = cohort.students.filter( student => !student.active).length;
             summary.activity.push([cohortName, active, inactive]);
@@ -46,7 +46,7 @@ var Laboratoria = {
             summary.satisfaction.push([cohortName, satisfied/sprints, unsatisfied/sprints]);
             summary.score.push([cohortName, coaches/sprints, jedis/sprints]);
         });
-
+        
         return summary;
     },
     
@@ -58,6 +58,8 @@ var Laboratoria = {
         
         
         cohort.students.map((student) =>{
+            if(Object.keys(student).length<=0) return;
+            
             var sprintData = [['Sprints', 'Total', 'Tech', 'HSE']];
             
             var sprints = student.sprints.length;
@@ -76,8 +78,8 @@ var Laboratoria = {
                 tech  += sprint.score.tech;
                 hse   += sprint.score.hse;
             });
-
-
+            
+            
             var newStudent = {
                 data: {
                     name: student.name,
@@ -92,42 +94,50 @@ var Laboratoria = {
             }
             students.push(newStudent);
         });
-        return {title:officeName +" - "+cohortName, students:students};
+        return {
+            title: officeName+"/"+cohortName,
+            students: students
+        };
     },
-
+    
     /** Gets the special summarized data needed for the ui */
     getCohortSummary: function(officeName, cohortName) {
         var office = this.sourceData[officeName];
         var cohort = office[cohortName];
-
+        
         var summary = {
             name: cohortName,
-            activity: [['Sprints','Activas', 'Inactivas']],
+            activity: [['Estatus', 'Cantidad']],
             satisfaction:[['Sprints', 'Sí', 'No']],
             score:[['Sprints', 'Coaches', 'Jedis']],
             success:[['Sprints', 'Total', 'Tech', 'HSE']],
+            totalSuccess: [['Estatus', 'Cantidad']],
         };
         
         for (var i=1;i<=4;i++) {
             summary.success.push(["Sprint "+i, 0, 0, 0]);   
         }
-        cohort.students.map( (student) => {
+        summary.activity.push(['Activas', cohort.students.filter( student => student.active).length ] );
+        summary.activity.push(['Inactivas', cohort.students.filter( student => !student.active).length ] );
+        
+        var successful = 0;
+        cohort.students.forEach( (student) => {
             if(Object.keys(student).length<=0) return;
+            
             var success = this.getSprintsSuccess(student);
             for (var i=0;i<success.length;i++) {
                 if(success[i].total){summary.success[i+1][1]++};
                 if(success[i].tech) {summary.success[i+1][2]++};
                 if(success[i].hse)  {summary.success[i+1][3]++};
             }
+            if ( this.getStudentSuccess(student) ) {successful++};
         });
-
+        summary.totalSuccess.push(['Sí', successful]);
+        summary.totalSuccess.push(['No',  cohort.students.length-successful]);
+        
         cohort.ratings.map( (rating) => {
             var sprintName = "Sprint " + rating.sprint;
-            summary.activity.push([
-                sprintName,
-                cohort.students.filter( student => student.active).length,
-                cohort.students.filter( student => !student.active).length
-            ]);
+            
             summary.satisfaction.push([
                 sprintName,
                 rating.student.cumple + rating.student.supera,
@@ -137,10 +147,10 @@ var Laboratoria = {
         });        
         return summary;
     },
-    /** Get the sucess status for a student **/
+    /** Get the success status for a student **/
     getSprintsSuccess: function(student) {
-        var sprints = [];
-        student.sprints.map(function(sprint) {
+        
+        return student.sprints.map(function(sprint) {
             var success = {
                 total: false,
                 tech: false,
@@ -150,8 +160,19 @@ var Laboratoria = {
             success.tech  = (sprint.score.tech > (1800*0.7)) && student.active;
             success.hse   = (sprint.score.tech > (1200*0.7)) && student.active;
             
-            sprints.push(success);
+            return success;
         });
-        return sprints;
+    },
+    
+    /** Get the success status for a student **/
+    getStudentSuccess: function(student) {
+        if (!student.active) { return false; }
+        
+        var total = 0;
+        student.sprints.forEach(function(sprint) {
+            total  += sprint.score.tech + sprint.score.hse;
+        });
+        
+        return (total > (3000*0.7*student.sprints.length)); 
     },
 }
