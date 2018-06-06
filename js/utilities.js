@@ -15,12 +15,12 @@ function createPieGraph(element, rawData) {
 }
 
 function fillTemplate(template, data, elementType, className) {
-    Object.keys(data).map(function(index){
-        template = template.replace("{{"+index+"}}", data[index]);
-    });
-    var newElement = document.createElement(elementType);
-    newElement.className=className;
-    newElement.innerHTML = template;
+    for ( property in data ) {
+        template = template.replace("{{"+property+"}}", data[property]);
+    };
+    var element = document.createElement(elementType);
+    element.className = className;
+    element.innerHTML = template;
 
-    return newElement;
+    return element;
 }
