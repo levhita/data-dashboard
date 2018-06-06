@@ -22,7 +22,7 @@ var Laboratoria = {
             score: [['Generación', 'Coaches', 'Jedis']],
         }
         
-        Object.keys(office).map( function(cohortName) {
+        for(var cohortName in office){
             var cohort = office[cohortName];
             
             var active = cohort.students.filter( student => student.active).length;
@@ -35,7 +35,7 @@ var Laboratoria = {
             var coaches = 0;
             var jedis = 0;
             
-            cohort.ratings.map( (rating) => {
+            cohort.ratings.forEach( function(rating) {
                 satisfied += rating.student.cumple + rating.student.supera;
                 unsatisfied += rating.student['no-cumple'];
                 coaches += rating.teacher;
@@ -45,7 +45,7 @@ var Laboratoria = {
             
             summary.satisfaction.push([cohortName, satisfied/sprints, unsatisfied/sprints]);
             summary.score.push([cohortName, coaches/sprints, jedis/sprints]);
-        });
+        };
         
         return summary;
     },
@@ -56,7 +56,7 @@ var Laboratoria = {
         var cohort = office[cohortName];
         students = [];
             
-        cohort.students.map((student) =>{
+        cohort.students.forEach((student) =>{
             if(Object.keys(student).length<=0) return;
             
             var sprintData = [['Sprints', 'Total', 'Tech', 'HSE']];
@@ -66,7 +66,7 @@ var Laboratoria = {
             var tech  = 0
             var hse   = 0;
             
-            student.sprints.map(function(sprint){
+            student.sprints.forEach( function(sprint) {
                 sprintData.push([
                     'Sprint '+ sprint.number,
                     sprint.score.tech+sprint.score.hse,
@@ -133,7 +133,7 @@ var Laboratoria = {
         summary.totalSuccess.push(['Sí', successful]);
         summary.totalSuccess.push(['No',  cohort.students.length-successful]);
         
-        cohort.ratings.map( (rating) => {
+        cohort.ratings.forEach( function(rating) {
             var sprintName = "Sprint " + rating.sprint;
             
             summary.satisfaction.push([
@@ -148,7 +148,7 @@ var Laboratoria = {
     /** Get the success status for a student **/
     getSprintsSuccess: function(student) {
         
-        return student.sprints.map(function(sprint) {
+        return student.sprints.map( function(sprint) {
             var success = {
                 total: false,
                 tech: false,
@@ -171,6 +171,6 @@ var Laboratoria = {
             total  += sprint.score.tech + sprint.score.hse;
         });
         
-        return (total > (3000*0.7*student.sprints.length)); 
+        return total > (3000*0.7*student.sprints.length); 
     },
 }
