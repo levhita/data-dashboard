@@ -1,4 +1,5 @@
 var section = 'stats';
+var status  = 'active';
 
 window.onload = function(){
        
@@ -12,7 +13,7 @@ window.onload = function(){
     
     cohortsSelect.addEventListener('change', function() {
         fillCohortSummary( Laboratoria.getCohortSummary(officesSelect.value, this.value) );
-        fillStudents( Laboratoria.getStudents(id('offices-select').value, id('cohorts-select').value) );
+        fillStudents(Laboratoria.getStudents(id('offices-select').value,id('cohorts-select').value));
     });
     
     fillOptions(Laboratoria.getOfficeNames(), officesSelect); 
@@ -36,6 +37,22 @@ window.onload = function(){
         
         fillOfficeSummary( Laboratoria.getOfficeSummary(id('offices-select').value) );
         fillCohortSummary( Laboratoria.getCohortSummary(id('offices-select').value, id('cohorts-select').value) );
+    });
+
+    id('active-button').addEventListener('click', function(){
+        status='active';
+        id('active-button').classList.add('active');
+        id('inactive-button').classList.remove('active');
+
+        fillStudents( Laboratoria.getStudents(id('offices-select').value, id('cohorts-select').value) );
+    });
+
+    id('inactive-button').addEventListener('click', function(){
+        status='inactive';
+        id('inactive-button').classList.add('active');
+        id('active-button').classList.remove('active');
+
+        fillStudents( Laboratoria.getStudents(id('offices-select').value, id('cohorts-select').value) );
     });
 }
 
@@ -76,13 +93,20 @@ function fillCohortSummary(cohort) {
 
 function fillStudents(students) {
     if(section!=='students') return ;
+
     id('students-title').textContent = students.title;
     var container = id('students-container');
     container.innerHTML='';
     
+    var selectedStudents = [];
+    if (status=='active') {
+        selectedStudents = students.students.filter( student => student.data.active=='success' );
+    } else {
+        selectedStudents = students.students.filter( student => student.data.active!='success' );
+    }
+
     var template = id('student-template').innerHTML;
-    
-    students.students.forEach(function(student){
+    selectedStudents.forEach(function(student){
         var newElement = fillTemplate(template, student.data, 'div', 'card')
         container.appendChild(newElement);
         if (student.sprints.length>1) {

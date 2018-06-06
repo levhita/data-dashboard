@@ -55,8 +55,7 @@ var Laboratoria = {
         var office = this.sourceData[officeName];
         var cohort = office[cohortName];
         students = [];
-        
-        
+            
         cohort.students.map((student) =>{
             if(Object.keys(student).length<=0) return;
             
@@ -78,8 +77,7 @@ var Laboratoria = {
                 tech  += sprint.score.tech;
                 hse   += sprint.score.hse;
             });
-            
-            
+                        
             var newStudent = {
                 data: {
                     name: student.name,

@@ -28,24 +28,35 @@ header {
 header select {
     font-size: 10px;
 }
-header nav{
+
+#students nav {
+    float:right;
+}
+
+header nav {
     clear:both;
     text-align: right;
     margin-top:36px;
 }
-header nav a {
+header nav a, #students nav a {
     box-sizing: border-box;
     display:inline-block;
     height:32px;
     padding:0.6em;
-    background-color:#ffec60;
+    background-color:#cacaca;
     color: rgb(65, 65, 65);
     text-decoration:none;
     font-weight: bolder;
+    border-radius: 5px;
 }
-header nav a.active {
+
+header nav a.active, #students nav a.active {
     background-color: #ffe521;
     color:black;
+}
+
+#students nav a {
+    padding:0.4em;
 }
 
 #logo {
@@ -99,6 +110,8 @@ section#cohort h3 {
     background-color: white;
     border-radius: 0.5em;
 }
+
+
 #students  .content img {
     float:left;
     width: 5em;
